@@ -1,0 +1,139 @@
+Sounds like the 2nd interview will not be overtly technical, regardless, I'm starting to drill interview practice questions in JavaScript/Go (via leetcode, since it's free and the questions are rather interesting from an algorithms perspective). 
+ 
+However, I'm a little nervous just forgetting to study test philosophy & particular tools in Kount's QA acceptance pipeline for the 2nd interview, since it's just so clear to me how  to go about getting stronger in JavaScript/Go for the 3rd, and preparing for the 2nd I don't know where to begin.
+ 
+#ask
+Regarding philosophy, I'm curious if you had any notes/documentation that you encountered during your undergrad about software testing / unit tests. The notes I'll go through on my own are these https://stg-tud.github.io/eise/WS18-SE-12-Software_Testing_and_Unit_Tests.pdf and various answers on StackExchange.
+ 
+#ask 
+Regarding AWS/Kubernetes/GitLab, how important do you think it is that I'm familiar with Kount's particular stack (compared to being a strong/efficient/idiomatic JavaScript/Go programmer)? I know I'll be testing APIs written in Go, writing the tests in JavaScript/TypeScript, automating the testing with GitLab, deploying to dockerized (?) environments via AWS (and then there's something I need to know about Kubernetes...), but it's hard to conceptualize this process without knowing how the parts fit together. 
+ 
+#ask 
+Maybe for this, might you have time to write a quick snapshot of what: 
+ 
+1. writing tests cases looks like (e.g., (?) accessing DOM objects & executing queries through Kount's API)  
+2. how your test harness is set up (?) in Git-Lab 
+3. what work you have to do to oversee deployment to dockerized environments?
+ 
+#give
+Could cook you and your friends a meal sometime once COVID19 is over. I'm a pretty mean vegetarian cook.
+
+Ashley Gilbert 12:08 AM
+
+Just getting to this now. I forgot to message you after Thursday and see how it went. He hasn't given me any indication either for how things are going or when interviews will continue but fingers crossed. I will answer your questions to the best of my ability tomorrow at some point. Definitely not opposed to you cooking for us sometime in the hopefully not too too distant future  😊
+
+Colton Grainger 6:49 AM
+
+Yay, thanks.
+Oh, looks like Eric won't ask me for a 2nd interview, so this is no longer urgent. Alas.
+
+Ashley Gilbert 9:33 AM
+
+Oh no! Dang well, sorry to hear. Like I said, he hasn't really been keeping me updated. 
+Ashley Gilbert 9:36 AM
+
+Definitely still willing to answer your questions if you want. Or if you have others you'd like answered. 
+Colton Grainger 9:53 AM
+
+Yeah, it makes sense. And sure, I mean, and I'd still be willing to make y'all some food if you wanted to answer them. If you have time to answer, I'll have a picture of the CI/CD workflow at Kount that I could use to study from / implement little bits on my own.
+Ashley Gilbert 9:55 AM
+
+Yeah for sure. I'll answer those later this afternoon.
+Colton Grainger 9:55 AM
+
+rad, thanks
+Today
+Ashley Gilbert 9:49 AM
+
+Got busy and distracted yesterday. I WILL answer today 
+Ashley Gilbert 4:18 PM
+
+So for your first ask, I never did get any formal education on testing in college. They don't teach it and they don't emphasize that testing is a normal process involved in software development. In my opinion this does a huge disservice to the industry as well as new developers. So most of my testing experience came from on the job. I can send you some documentation related to some testing philosophies that I believe in and think are important for anyone involved in the development cycle.
+Ashley Gilbert 4:22 PM
+
+https://martinfowler.com/articles/practical-test-pyramid.html#:~:text=The%20%22Test%20Pyramid%22%20is%20a,put%20it%20into%20practice%20properly.
+No alt text provided for this image
+The Practical Test Pyramid
+martinfowler.com • 3 min read
+Ashley Gilbert 4:24 PM
+
+This is a basic article about test philosophy that I whole heartedly agree with. One thing I've. advocated for my entire career is unit testing. Unit tests get us the best value for our money. They are fast, easy to write, and catch the most common bugs. Most developers don't want to write them, but I often don't think they start out with a test driven development mindset.
+Ashley Gilbert 4:26 PM
+
+https://martinfowler.com/bliki/TestDrivenDevelopment.html
+
+https://medium.com/javascript-scene/tdd-changed-my-life-5af0ce099f80
+Ashley Gilbert 4:28 PM
+
+Here's some good articles on unit testing and how to write unit tests as well: 
+https://www.blinkingcaret.com/2016/04/27/what-exactly-is-a-unit-in-unit-testing/
+
+https://martinfowler.com/articles/mocksArentStubs.html
+
+https://medium.com/chris-nielsen/so-whats-a-good-unit-test-look-like-71f750333ac0
+
+http://blog.stevensanderson.com/2009/08/24/writing-great-unit-tests-best-and-worst-practises/
+Ashley Gilbert 4:32 PM
+
+The tests get more complicated and more time consuming (cost more money) as we move up the pyramid. But these are also still important and we have to have them. As you can imagine, integration tests and end to end tests don't use mocks and try to use actual data, unlike unit tests.
+Ashley Gilbert 4:34 PM
+
+There's lot of articles you can read about integration and end to end tests. The philosophy isn't so important. Most people agree on how these should be written and most people agree these tests are often more flaky.
+Ashley Gilbert 4:38 PM
+
+I'm going to skip a little on your second ask. I don't think its in general important to know a particular stack as a person who works in QA other than lots of companies will try and make sure you know something about a lot of these same topics. They want to see a wide breadth of languages and a general knowledge of how pipelines/CI/CD works. (continuous integration, continuous delivery, continuous deployment -- somewhat good to understand the difference). almost all companies use a different stack but basically do the same thing.
+
+Gitlab, Kubernetes, terraform. These are all kind of the new hotness so its not a bad idea to do some tutorials on them
+Ashley Gilbert 4:53 PM
+
+On to your 3rd ask. 
+1. writing tests cases looks like (e.g., (?) accessing DOM objects & executing queries through Kount's API)
+
+This is going to look at lot different at Kount than it does a lot of places. Right now Kount has a lot of API's. These are typically a lot faster to test. I usually start about my manually testing the API or feature and kind of doing some exploratory testing. I also talk with the devs and see what areas they think are risky. I typically start with the happy path and work out from there. Does it work when I put in all the fields with correct values. Then I can say well what happens if I put in all bad fields, or even one bad field. Does it fail the right way. etc etc. I can go into how to test but these are some of the first test cases I write. A happy path and then cover risk areas. Ideally a lot would be covered by unit tests and you jsut want to get decent coverage of a full path case. So one or two tests per feature depending on how complicated it is. Then we add tests for areas that have had bugs in the past. or bugs that we've fixed. Hopefully that makes sense. The process is very similar for UI testing. Happy path then try and make it break and break correctly. Then write tests for know bug areas. Assessing from end DOM objects is kind of different depending on the tech that you use. At Kount we use a technology called Cypress. It is a front end testing tool. Most companies use Selenium or Selenium based testing tools. The reason I like Cypress, and the reason we chose it is that it does a lot of extra stuff for us for free, which would require us to implement it ourselves if we were using Selenium. Its hard for me to go into much more detail without getting into Cypress specifics but it basically searches for objects asynchronously based on DOM CSS selectors (id's, class names, hmtl tags). We have been adding a lot of testing DOM things to our front end code to make this process easier. This is also one of the TDD philosophies I believe is important and nice. Anyway, it takes these Dom objects and does actions on them. Fills in fields, clicks buttons, refreshes the page, etc. Please ask more questions about this if you have them but without an example its hard to show you. Cypress has videos and tutorials. but Selenium right now is kind of the standard. I don't think I'd ever want to switch away from Cypress though ahaha. 
+
+2. how your test harness is set up (?) in Git-Lab
+
+So our test harness is Mocha through NPM or Mocha and Cypress through NPM. GitLab allows you to run Docker containers and we can run whatever scripts we want. And provided that the Gitlab runners have access to all our services,  it can run all our tests there. Unit tests are even easier than that, we run them in the application code before we even merge to master (again usually in a docker container). 
+
+3. what work you have to do to oversee deployment to dockerized environments?
+
+We practice continuous delivery so our pipelines often just have a button that gets clicked to deploy out. We often have automated tests that run in each environment before we get to production. We also run more and more tests as we get closer to production. This allows us to not have to have a dedicated QA resource spending hours validating a deploy to production. We may do one or two spot check of specific features, but typically the pipeline runs on its own, and deploys on its own to kubernetes clusters using dockerized containers and apps. each service is independent and typically doesn't require dependencies on another (sometimes it does, such as a our front end) but we are getting better and better at being independent teams.
+Colton Grainger 7:27 PM
+
+Super! I appreciate you  for fleshing out replies to my questions. 
+ 
+I'll have to compile your answers and go into specifics for myself over the next few weeks of unemployment. 
+ 
+Ultimately I know I really just loathe front-end web development since it's so painful, but it's neat to have at least knowledge of the standard tools used for front-end testing. 
+ 
+I think what I'll do for myself will be in reading through those articles and getting comfortable with the tools of hotness aforementioned. 
+ 
+Finally, thanks for the referral. I'm sad, but understand why it couldn't work out. I'm still pushing to work at Kount, but it might be a few months before any junior roles open up, and I'll certainly have to take a job in the meantime to have something to do other than languish in boredom.
+Ashley Gilbert 7:32 PM
+
+Yeah I'm sad too. I think in the end the job market right now is just super competitive which isn't your fault. We had some really really strong candidates. Or at least that's what's Eric implied. 
+Ashley Gilbert 7:33 PM
+
+I hope if you have question you feel comfortable coming to me with them. I'll definitely keep you updated on our openings, if i hear about them. I also know some of our other directors who are totally open to talking to people and discussing positions too. I'm glad you aren't giving up and hope you find a place at Kount in the future. 
+
+I also hate front end if that helps at all hahahha
+
+Also i would encourage you to work on personal projects. That'll help you a lot. Especially in languages you aren't super comfortable with. It'll give you a portfolio to show and back up your experiences. 
+Colton Grainger 7:40 PM
+
+Oh, absolutely, I know I have unfinished work on GitHub and whatnot, it's like my Dharma to eventually return to polish up old projects. I'm still thinking to improve my skills in JavaScript/TypeScript  and Go. Probably will also explore more of the developer tools I was reticent to use while slammed with work in grad school.
+ 
+About eventually working at Kount: I bothered Eric, Conrad, Nate, Brady, Ted Hamlin, and Mark Evans, so they all know I'm game to do really anything to be part of the intellectual env there. 
+A tough market is indeed the vibe I'm getting: I do like professional development webinars and loads of tech professionals have just been stalled in their job placements. From a macro economic perspective too it makes sense to see surplus labor, and given that I'm making a career transition, I'm really low-ranked in comparison to other folks who're just accidentally unemployed from AirBnB and are now hunger to return to work.
+ 
+Anyways, so self-study and non-violence is the path I'm on, I'll let you know how it goes.
+Ashley Gilbert 7:41 PM
+
+👍
+
+I really wish the best for you and have all my fingers crossed. Stay safe!
+Colton Grainger 7:43 PM
+
+you too! also, yeah, it felt good what you said about front end.
+
+I have friends who like it but to me it is not interesting hahah
